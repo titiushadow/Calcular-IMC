@@ -58,6 +58,7 @@ body {
     justify-content: space-between;
     margin-top: 2rem;
     gap: 1rem;
+    padding: 1rem;
 }
 
 button {
