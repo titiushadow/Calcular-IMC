@@ -45,6 +45,14 @@ const weightInput = document.querySelector("#weight");
 const calcular_btn = document.querySelector("#calcular_btn");
 const clearBtn = document.querySelector("#clear-btn");
 
+const calculadora_container = document.querySelector("#calculadora_container");
+const result_container = document.querySelector("#result_container");
+
+const imcNumero = document.querySelector("#imc-numero span");
+const imcInfo = document.querySelector("#imc-info span");
+
+const voltarBtn = document.querySelector("#voltar-btn")
+
 // Funções
 function createTable(data) {
     data.forEach((item) => {
@@ -83,6 +91,11 @@ function calc_imc(weight, height) {
     return imc;
 }
 
+function showOrHideResults() {
+    calculadora_container.classList.toggle("hide");
+    result_container.classList.toggle("hide");
+  }
+
 // Inicialização
 createTable(data);
 
@@ -97,12 +110,11 @@ createTable(data);
 
 calcular_btn.addEventListener("click", (e) => {
     e.preventDefault();
-  
+
     const weight = +weightInput.value.replace(",", ".");
     const height = +heightInput.value.replace(",", ".");
 
     if (!weight || !height) return;
-  
     const imc = calc_imc(weight, height);
 
     let info
@@ -112,8 +124,15 @@ calcular_btn.addEventListener("click", (e) => {
             info = item.info;
         }
     });
-    console.log(info)
+
     if (!info) return;
+
+    imcNumero.innerText = imc
+    imcInfo.innerText = info
+
+    showOrHideResults();
+
+
 });
 clearBtn.addEventListener("click", (e) => {
     e.preventDefault();
