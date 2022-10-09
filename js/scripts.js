@@ -42,7 +42,7 @@ const imcTable = document.querySelector("#imc-table");
 
 const heightInput = document.querySelector("#height");
 const weightInput = document.querySelector("#weight");
-const calcBtn = document.querySelector("#calc-btn");
+const calcular_btn = document.querySelector("#calcular_btn");
 const clearBtn = document.querySelector("#clear-btn");
 
 // Funções
@@ -77,6 +77,12 @@ function validDigits(text) {
     return text.replace(/[^0-9,]/g, "")
 }
 
+function calc_imc(weight, height) {
+    const imc = (weight / (height * height)).toFixed(1);
+
+    return imc;
+}
+
 // Inicialização
 createTable(data);
 
@@ -88,6 +94,27 @@ createTable(data);
         e.target.value = updateValue;
     })
 })
+
+calcular_btn.addEventListener("click", (e) => {
+    e.preventDefault();
+  
+    const weight = +weightInput.value.replace(",", ".");
+    const height = +heightInput.value.replace(",", ".");
+
+    if (!weight || !height) return;
+  
+    const imc = calc_imc(weight, height);
+
+    let info
+
+    data.forEach((item) => {
+        if(imc >= item.min && imc <= item.max) {
+            info = item.info;
+        }
+    });
+    console.log(info)
+    if (!info) return;
+});
 clearBtn.addEventListener("click", (e) => {
     e.preventDefault();
     cleanInputs();
