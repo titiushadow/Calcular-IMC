@@ -43,19 +43,19 @@ const imcTable = document.querySelector("#imc-table");
 const heightInput = document.querySelector("#height");
 const weightInput = document.querySelector("#weight");
 const calcular_btn = document.querySelector("#calcular_btn");
-const clearBtn = document.querySelector("#clear-btn");
+const clearBtn = document.querySelector("#clear_btn");
 
-const calculadora_container = document.querySelector("#calculadora_container");
-const result_container = document.querySelector("#result_container");
+const calcContainer = document.querySelector("#calculadora-container");
+const resultContainer = document.querySelector("#result-container");
 
 const imcNumero = document.querySelector("#imc-numero span");
 const imcInfo = document.querySelector("#imc-info span");
 
-const voltarBtn = document.querySelector("#voltar-btn")
+const voltar_btn = document.querySelector("#voltar-btn");
 
 // Funções
 function createTable(data) {
-    data.forEach((item) => {
+  data.forEach((item) => {
     const div = document.createElement("div");
     div.classList.add("table-data");
 
@@ -73,68 +73,99 @@ function createTable(data) {
     div.appendChild(obesity);
 
     imcTable.appendChild(div);
-    });
-  }
-
-function cleanInputs() {
-    heightInput = ""
-    weightInput = ""
+  });
 }
 
 function validDigits(text) {
-    return text.replace(/[^0-9,]/g, "")
+    return text.replace(/[^0-9,]/g, "");
 }
 
-function calc_imc(weight, height) {
+function calcImc(height, weight) {
     const imc = (weight / (height * height)).toFixed(1);
-
     return imc;
 }
 
-function showOrHideResults() {
-    calculadora_container.classList.toggle("hide");
-    result_container.classList.toggle("hide");
-  }
+function cleanInputs() {
+  heightInput.value = "";
+  weightInput.value = "";
+  imcNumero.className = "";
+  imcInfo.className = "";
+}
 
-// Inicialização
+function showOrHideResults() {
+  calcContainer.classList.toggle("hide");
+  resultContainer.classList.toggle("hide");
+}
+
+// Init
 createTable(data);
 
 // Eventos
 [heightInput, weightInput].forEach((el) => {
-    el.addEventListener("input", (e) => {
-        const updateValue = validDigits(e.target.value);
+  el.addEventListener("input", (e) => {
+    const updatedValue = validDigits(e.target.value);
 
-        e.target.value = updateValue;
-    })
-})
+    e.target.value = updatedValue;
+  });
+});
 
 calcular_btn.addEventListener("click", (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const weight = +weightInput.value.replace(",", ".");
-    const height = +heightInput.value.replace(",", ".");
+  const weight = +weightInput.value.replace(",", ".");
+  const height = +heightInput.value.replace(",", ".");
 
-    if (!weight || !height) return;
-    const imc = calc_imc(weight, height);
+  console.log(weight, height);
 
-    let info
+  if (!weight || !height) return;
 
-    data.forEach((item) => {
-        if(imc >= item.min && imc <= item.max) {
-            info = item.info;
-        }
-    });
+  const imc = calcImc(height, weight);
+  let info;
 
-    if (!info) return;
+  data.forEach((item) => {
+    if (imc >= item.min && imc <= item.max) {
+      info = item.info;
+    }
+  });
 
-    imcNumero.innerText = imc
-    imcInfo.innerText = info
+  if (!info) return;
 
-    showOrHideResults();
+  imcNumero.innerText = imc;
+  imcInfo.innerText = info;
 
+  switch (info) {
+    case "Magreza":
+      imcNumero.classList.add("baixo");
+      imcInfo.classList.add("baixo");
+      break;
+    case "Normal":
+      imcNumero.classList.add("bom");
+      imcInfo.classList.add("bom");
+      break;
+    case "Sobrepeso":
+      imcNumero.classList.add("baixo");
+      imcInfo.classList.add("baixo");
+      break;
+    case "Obesidade":
+      imcNumero.classList.add("medio");
+      imcInfo.classList.add("medio");
+      break;
+    case "Obesidade grave":
+      imcNumero.classList.add("alto");
+      imcInfo.classList.add("alto");
+      break;
+  }
 
+  showOrHideResults();
 });
+
 clearBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    cleanInputs();
-})
+  e.preventDefault();
+
+  cleanInputs();
+});
+
+voltar_btn.addEventListener("click", (e) => {
+  cleanInputs();
+  showOrHideResults();
+});

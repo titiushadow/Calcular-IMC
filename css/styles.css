@@ -76,7 +76,7 @@ button:hover {
     opacity: 1;
 }
 
-#clear-btn {
+#clear_btn {
     background-color: #444;
 }
 
@@ -86,7 +86,7 @@ button:hover {
     flex-direction: column;
 }
 
-#imc-number {
+#imc-numero {
     font-size: 2.4rem;
     margin-bottom: 0.6rem;
 }
@@ -131,7 +131,7 @@ button:hover {
   max-width: 80px;
 }
 
-#back-btn {
+#voltar_btn {
   align-self: center;
 }
 
